@@ -2,6 +2,9 @@ class APIBase < Grape::API
 
   prefix 'api'
   format :json
+  
+  use ::WineBouncer::OAuth2
+
   mount V1::BaseAPI
   # This could be uncommented to support an additional version
   # mount V2::Base

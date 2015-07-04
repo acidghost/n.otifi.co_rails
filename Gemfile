@@ -33,6 +33,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'devise'
 gem 'doorkeeper'
+gem 'wine_bouncer'
 
 gem 'activeadmin', '~> 1.0.0.pre1'
 
