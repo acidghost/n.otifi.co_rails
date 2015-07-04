@@ -1,0 +1,18 @@
+AllCops:
+  Exclude:
+    - db/**/*
+    - config/**/*
+    - bin/**/*
+  RunRailsCops: true
+
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
+ClassAndModuleChildren:
+  Enabled: false
+
+Documentation:
+    Enabled: false
