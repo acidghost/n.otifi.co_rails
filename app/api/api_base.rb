@@ -6,11 +6,9 @@ class APIBase < Grape::API
   use ::WineBouncer::OAuth2
 
   mount V1::BaseAPI
-  # This could be uncommented to support an additional version
-  # mount V2::Base
 
   add_swagger_documentation \
     api_version: 'v1',
-    base_path: '/api'
+    mount_path: '/swagger_doc'
 
 end

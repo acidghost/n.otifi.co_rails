@@ -4,6 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def index
-    render json: { message: 'API starts from /api endpoint.', follow: "#{request.base_url}/api/v1" }
+    render json: { message: 'API starts from /api endpoint.', follow: "#{request.base_url}/api/swagger_doc.json" }
   end
 end

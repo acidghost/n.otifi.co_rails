@@ -1,6 +1,6 @@
-GrapeSwaggerRails.options.app_url  = 'http://localhost:3000/api'
+GrapeSwaggerRails.options.url = '/api/swagger_doc'
+GrapeSwaggerRails.options.app_url  = 'http://localhost:3000'
 GrapeSwaggerRails.options.app_name = 'n.otifi.co'
-GrapeSwaggerRails.options.headers['Special-Header'] = 'Some Secret Value'
-GrapeSwaggerRails.options.api_auth     = 'basic' # Or 'bearer' for OAuth
-GrapeSwaggerRails.options.api_key_name = 'Authorization'
-GrapeSwaggerRails.options.api_key_type = 'header'
+GrapeSwaggerRails.options.api_auth     = 'bearer' # Or 'bearer' for OAuth
+GrapeSwaggerRails.options.api_key_name = 'access_token'
+GrapeSwaggerRails.options.api_key_type = 'query'

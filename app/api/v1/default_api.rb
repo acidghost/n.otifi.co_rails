@@ -16,6 +16,10 @@ module V1
         def logger
           Rails.logger
         end
+
+        def current_user
+          resource_owner
+        end
       end
 
       # global handler for simple not found case
@@ -34,8 +38,22 @@ module V1
       end
 
       # HTTP header based authentication
-      before do
-        error!('Unauthorized', 401) unless headers['Authorization'] == 'some token'
+      # before do
+      #   error!('Unauthorized', 401) unless headers['Authorization'] == 'some token'
+      # end
+
+      rescue_from WineBouncer::Errors::OAuthUnauthorizedError do |_e|
+        error = { id: 'unauthorized',
+                  message: 'You must provide an OAuth token to complete this request.' }
+
+        error_response(status: 401, message: error)
+      end
+
+      rescue_from WineBouncer::Errors::OAuthForbiddenError do |_e|
+        error = { id: 'forbidden',
+                  message: 'This operation is not permitted with this scope.' }
+
+        error_response(status: 403, message: error)
       end
     end
 

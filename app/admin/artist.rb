@@ -1,4 +1,4 @@
-ActiveAdmin.register User do
+ActiveAdmin.register Artist do
 
 
   # See permitted parameters documentation:
@@ -14,6 +14,6 @@ ActiveAdmin.register User do
   #   permitted
   # end
 
-  permit_params :email, :first_name, :last_name, :password, artist_ids: []
+  permit_params :raname, :name
 
 end
