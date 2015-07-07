@@ -16,7 +16,15 @@ class V1::Artists < Grape::API
       requires :search_text, type: String, desc: 'The artist to search', documentation: { example: 'Surgeon' }
     end
     get 'search' do
-      { txt: permitted_params[:search_text] }
+      query = permitted_params[:search_text]
+      result = Wombat.crawl do
+        base_url 'http://www.residentadvisor.net'
+        path "/search.aspx?searchstr=#{query}"
+
+        artists({ css: 'a[href^="/dj/"]' }, :list)
+      end
+      result['artists'].select! { |artist| !artist.empty? }.uniq!
+      result
     end
 
     desc 'Get artist details'
