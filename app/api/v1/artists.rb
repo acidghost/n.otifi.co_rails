@@ -21,9 +21,17 @@ class V1::Artists < Grape::API
         base_url 'http://www.residentadvisor.net'
         path "/search.aspx?searchstr=#{query}"
 
-        artists({ css: 'a[href^="/dj/"]' }, :list)
+        artists 'css=a[href^="/dj/"]', :iterator do
+          full_name 'xpath=text()'
+          ra_link 'xpath=@href' do |href|
+            "http://www.residentadvisor.net#{href}"
+          end
+          href 'xpath=@href' do |href|
+            "#{Figaro.env.ROOT_URL}#{href.gsub('/dj/', '/api/v1/artists/')}"
+          end
+        end
       end
-      result['artists'].select! { |artist| !artist.empty? }.uniq!
+      result['artists'].select! { |artist| artist['full_name'].present? }.try :uniq!
       result
     end
 
