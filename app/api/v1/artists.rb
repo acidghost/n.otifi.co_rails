@@ -22,7 +22,8 @@ class V1::Artists < Grape::API
         path "/search.aspx?searchstr=#{query}"
 
         artists 'css=a[href^="/dj/"]', :iterator do
-          full_name 'xpath=text()'
+          # noinspection RubyArgCount
+          name 'xpath=text()'
           ra_link 'xpath=@href' do |href|
             "http://www.residentadvisor.net#{href}"
           end
@@ -41,7 +42,31 @@ class V1::Artists < Grape::API
       requires :raname, type: String, desc: 'The artist RA name', documentation: { example: 'surgeon' }
     end
     get ':raname' do
-      Artist.find raname: permitted_params[:raname]
+      raname = permitted_params[:raname]
+      begin
+        Artist.find_by_raname raname
+      rescue ActiveRecord::RecordNotFound
+        Wombat.crawl do
+          base_url 'http://www.residentadvisor.net'
+          path "/dj/#{raname}"
+
+          # noinspection RubyArgCount
+          name 'css=#featureHead h1'
+          ra_link "http://www.residentadvisor.net/dj/#{raname}"
+          images do
+            normal "http://www.residentadvisor.net/images/profiles/#{raname}.jpg"
+            large "http://www.residentadvisor.net/images/profiles/lg/#{raname}.jpg"
+          end
+
+          events 'css=#items li', :iterator do
+            # noinspection RubyArgCount
+            name 'css=h1.title>a'
+            date 'css=span>time' do |date|
+              Date.parse(date).to_datetime.to_i
+            end
+          end
+        end
+      end
     end
 
   end
